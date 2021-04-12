@@ -1345,6 +1345,29 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
     }
 
     /**
+     * @notice Set the amount of COMP distributed per block
+     * @param compRate_ The amount of COMP wei per block to distribute
+     * @param borrow_ Whether the rate to adjust is for borrowing (true) or lending (false)
+     */
+    function _setCompRate(uint compRate_, bool borrow_) public {
+        require(adminOrInitializing(), "only admin can change comp rate");
+
+        uint oldRate = borrow_ ? compBorrowRate : compSupplyRate;
+
+        if (borrow_) {
+            compBorrowRate = compRate_;
+            
+            emit NewCompBorrowRate(oldRate, compRate_);
+        } else {
+            compSupplyRate = compRate_;
+
+            emit NewCompSupplyRate(oldRate, compRate_);
+        }
+
+        refreshCompSpeedsInternal();
+    }
+
+    /**
      * @notice Add markets to compMarkets, allowing them to earn COMP in the flywheel
      * @param cTokens The addresses of the markets to add
      */
