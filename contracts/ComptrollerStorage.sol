@@ -144,7 +144,7 @@ contract ComptrollerV5Storage is ComptrollerV4Storage {
     mapping(address => uint) public lastContributorBlock;
 }
 
-contract ComprollerV6Storage is ComptrollerV5Storage {
+contract ComptrollerV6Storage is ComptrollerV5Storage {
     /// @notice The rate at which the flywheel distributes COMP to supply markets, per block
     uint public compSupplyRate;
     
