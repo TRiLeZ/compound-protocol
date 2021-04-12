@@ -143,3 +143,17 @@ contract ComptrollerV5Storage is ComptrollerV4Storage {
     /// @notice Last block at which a contributor's COMP rewards have been allocated
     mapping(address => uint) public lastContributorBlock;
 }
+
+contract ComprollerV6Storage is ComptrollerV5Storage {
+    /// @notice The rate at which the flywheel distributes COMP to supply markets, per block
+    uint public compSupplyRate;
+    
+    /// @notice The rate at which the flywheel distributes COMP to borrow markets, per block
+    uint public compBorrowRate;
+
+    /// @notice The weight of compSupplyRate that each market currently receives
+    mapping(address => uint16) public compSupplyWeights;
+
+    /// @notice The weight of compBorrowRate that each market currently receives
+    mapping(address => uint16) public compBorrowWeights;
+}
