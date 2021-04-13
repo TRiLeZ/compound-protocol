@@ -58,6 +58,12 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
     /// @notice Emitted when a new COMP speed is calculated for a market
     event CompSpeedUpdated(CToken indexed cToken, uint newSpeed);
 
+    /// @notice Emitted when a new COMP speed is calculated for a market
+    event CompSupplySpeedUpdated(CToken indexed cToken, uint newSpeed);
+
+    /// @notice Emitted when a new COMP speed is calculated for a market
+    event CompBorrowSpeedUpdated(CToken indexed cToken, uint newSpeed);
+
     /// @notice Emitted when a new COMP speed is set for a contributor
     event ContributorCompSpeedUpdated(address indexed contributor, uint newSpeed);
 
@@ -1107,9 +1113,23 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
 
         for (uint i = 0; i < allMarkets_.length; i++) {
             CToken cToken = allMarkets[i];
-            uint newSpeed = totalUtility.mantissa > 0 ? mul_(compRate, div_(utilities[i], totalUtility)) : 0;
-            compSpeeds[address(cToken)] = newSpeed;
-            emit CompSpeedUpdated(cToken, newSpeed);
+
+            // Update supply speeds
+            uint _newSupplySpeed = totalUtility.mantissa > 0 && _totalSupplyWeight > 0 ?
+                mul_(mul_(compRate, div_(utilities[i], totalUtility)), div_(compSupplyWeights[address(cToken)], _totalSupplyWeight)) : 0;
+            
+            compSupplySpeeds[address(cToken)] = _newSupplySpeed;
+
+            emit CompSupplySpeedUpdated(cToken, _newSupplySpeed);
+
+
+            // Update borrow speeds
+            uint _newBorrowSpeed = totalUtility.mantissa > 0 && _totalBorrowWeight > 0 ?
+                mul_(mul_(compRate, div_(utilities[i], totalUtility)), div_(compBorrowWeights[address(cToken)], _totalBorrowWeight)) : 0;
+            
+            compBorrowSpeeds[address(cToken)] = _newBorrowSpeed;
+
+            emit CompBorrowSpeedUpdated(cToken, _newBorrowSpeed);
         }
     }
 
