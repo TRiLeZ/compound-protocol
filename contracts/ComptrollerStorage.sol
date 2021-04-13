@@ -156,4 +156,10 @@ contract ComptrollerV6Storage is ComptrollerV5Storage {
 
     /// @notice The weight of compBorrowRate that each market currently receives
     mapping(address => uint16) public compBorrowWeights;
+
+    /// @notice The portion of compSupplyRate that each supply market currently receives
+    mapping(address => uint) public compSupplySpeeds;
+
+    /// @notice The portion of compBorrowRate that each borrow market currently receives
+    mapping(address => uint) public compBorrowSpeeds;
 }
