@@ -1130,6 +1130,11 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
             compBorrowSpeeds[address(cToken)] = _newBorrowSpeed;
 
             emit CompBorrowSpeedUpdated(cToken, _newBorrowSpeed);
+
+            // The following is kept for legacy purposes and can be removed (test scenarios may need to be updated)
+            uint newSpeed = totalUtility.mantissa > 0 ? mul_(compRate, div_(utilities[i], totalUtility)) : 0;
+            compSpeeds[address(cToken)] = newSpeed;
+            emit CompSpeedUpdated(cToken, newSpeed);
         }
     }
 
@@ -1139,7 +1144,7 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
      */
     function updateCompSupplyIndex(address cToken) internal {
         CompMarketState storage supplyState = compSupplyState[cToken];
-        uint supplySpeed = compSpeeds[cToken];
+        uint supplySpeed = compSupplySpeeds[cToken];
         uint blockNumber = getBlockNumber();
         uint deltaBlocks = sub_(blockNumber, uint(supplyState.block));
         if (deltaBlocks > 0 && supplySpeed > 0) {
@@ -1162,7 +1167,7 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
      */
     function updateCompBorrowIndex(address cToken, Exp memory marketBorrowIndex) internal {
         CompMarketState storage borrowState = compBorrowState[cToken];
-        uint borrowSpeed = compSpeeds[cToken];
+        uint borrowSpeed = compBorrowSpeeds[cToken];
         uint blockNumber = getBlockNumber();
         uint deltaBlocks = sub_(blockNumber, uint(borrowState.block));
         if (deltaBlocks > 0 && borrowSpeed > 0) {
