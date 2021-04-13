@@ -1116,7 +1116,7 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
 
             // Update supply speeds
             uint _newSupplySpeed = totalUtility.mantissa > 0 && _totalSupplyWeight > 0 ?
-                mul_(mul_(compRate, div_(utilities[i], totalUtility)), div_(compSupplyWeights[address(cToken)], _totalSupplyWeight)) : 0;
+                mul_(mul_(compSupplyRate, div_(utilities[i], totalUtility)), div_(compSupplyWeights[address(cToken)], _totalSupplyWeight)) : 0;
             
             compSupplySpeeds[address(cToken)] = _newSupplySpeed;
 
@@ -1125,7 +1125,7 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
 
             // Update borrow speeds
             uint _newBorrowSpeed = totalUtility.mantissa > 0 && _totalBorrowWeight > 0 ?
-                mul_(mul_(compRate, div_(utilities[i], totalUtility)), div_(compBorrowWeights[address(cToken)], _totalBorrowWeight)) : 0;
+                mul_(mul_(compBorrowRate, div_(utilities[i], totalUtility)), div_(compBorrowWeights[address(cToken)], _totalBorrowWeight)) : 0;
             
             compBorrowSpeeds[address(cToken)] = _newBorrowSpeed;
 
