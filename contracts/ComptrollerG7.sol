@@ -1081,6 +1081,9 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
         Exp memory totalUtility = Exp({mantissa: 0});
         Exp[] memory utilities = new Exp[](allMarkets_.length);
 
+        uint _totalSupplyWeight = 0;
+        uint _totalBorrowWeight = 0;
+
         for (uint i = 0; i < allMarkets_.length; i++) {
             CToken cToken = allMarkets_[i];
 
@@ -1089,12 +1092,16 @@ contract ComptrollerG7 is ComptrollerV6Storage, ComptrollerInterface, Comptrolle
             updateCompSupplyIndex(address(cToken));
             updateCompBorrowIndex(address(cToken), borrowIndex);
 
-            // Update utility measures
             if (markets[address(cToken)].isComped) {
+                // Update utility measures
                 Exp memory assetPrice = Exp({mantissa: oracle.getUnderlyingPrice(cToken)});
                 Exp memory utility = mul_(assetPrice, cToken.totalBorrows());
                 utilities[i] = utility;
                 totalUtility = add_(totalUtility, utility);
+
+                // Update total distribution weights
+                _totalSupplyWeight = add_(_totalSupplyWeight, compSupplyWeights[address(cToken)]);
+                _totalBorrowWeight = add_(_totalBorrowWeight, compBorrowWeights[address(cToken)]);
             }
         }
 
