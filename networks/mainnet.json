@@ -77,7 +77,9 @@
         "cZRX": "0xB3319f5D18Bc0D84dD1b4825Dcde5d5f7266d407",
         "cWBTC": "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4",
         "USDC": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        "DSR_Updateable": "0xfeD941d39905B23D6FAf02C8301d40bD4834E27F"
+        "DSR_Updateable": "0xfeD941d39905B23D6FAf02C8301d40bD4834E27F",
+        "USDP": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
+        "cUSDP": "0x041171993284df560249B57358F931D9eB7b925D"
     },
     "Blocks": {
         "ComptrollerG8": 12596537,
@@ -132,7 +134,8 @@
         "wbtc2_irm": 11998859,
         "cZRX": 7710733,
         "cWBTC": 8163813,
-        "DSR_Updateable": 10504587
+        "DSR_Updateable": 10504587,
+        "cUSDP": 13258119
     },
     "PriceFeed": {
         "description": "Open Oracle Uniswap Anchored View + UNI",
@@ -370,6 +373,12 @@
             "decimals": 6,
             "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
             "oracle_key": "0x0000000000000000000000000000000000000001"
+        },
+        "USDP": {
+            "name": "Compound Pax Dollar",
+            "symbol": "USDP",
+            "decimals": 18,
+            "address": "0x8E870D67F660D95d5be530380D0eC0bd388289E1"
         }
     },
     "CTokenDelegate": {
@@ -514,6 +523,15 @@
             "contract": "CErc20",
             "initial_exchange_rate_mantissa": "20000000000000000",
             "address": "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4"
+        },
+        "cUSDP": {
+            "name": "Compound Pax Dollar",
+            "symbol": "cUSDP",
+            "decimals": 8,
+            "underlying": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
+            "contract": "CErc20Delegator",
+            "initial_exchange_rate_mantissa": "200000000000000000000000000",
+            "address": "0x041171993284df560249B57358F931D9eB7b925D"
         }
     },
     "InterestRateModel": {

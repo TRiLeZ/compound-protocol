@@ -1,0 +1,55 @@
+#!/usr/bin/env -S yarn repl -s
+
+PrintTransactionLogs
+
+-- Token holder addresses for mocking
+Alias CompHolder "0x7587caefc8096f5f40acb83a09df031a018c66ec"
+Alias TokenHolder "0x03eF33E66162ec503AE75dc192Ae3760F1Ac361E"
+Alias CUSDCHolder "0x5e34bc93a7506ecc8562ade4d5c8b090247a6349"
+
+Web3Fork "https://mainnet-eth.compound.finance/@13258207" (CompHolder TokenHolder CUSDCHolder)
+UseConfigs mainnet
+
+-- Delegate and propose market addition
+From CompHolder (Comp Delegate CompHolder)
+From CompHolder (GovernorBravo GovernorBravo Propose "Add Market" [(Address Comptroller) (Address Comptroller) (Address cUSDP)] [0 0 0] ["_supportMarket(address)" "_setCollateralFactor(address,uint256)" "_setReserveFactor(uint256)"] [[(address cUSDP)] [(address cUSDP) 0] [250000000000000000]])
+
+-- Fast forward, vote, queue, execute
+MineBlock
+AdvanceBlocks 14000
+From CompHolder (GovernorBravo GovernorBravo Proposal LastProposal Vote For)
+AdvanceBlocks 20000
+GovernorBravo GovernorBravo Proposal LastProposal Queue
+IncreaseTime 604910
+GovernorBravo GovernorBravo Proposal LastProposal Execute
+
+-- Assert new market supported
+Assert True (Comptroller CheckListed cUSDP)
+
+-- Ensure accrue interest works
+CToken cUSDP AccrueInterest
+
+-- Verify TokenHolder's pre-mint balance
+Assert Equal (Erc20 USDP TokenBalance TokenHolder) (401252976e18)
+
+-- Mint test
+From TokenHolder (Erc20 USDP Approve (Address cUSDP) 10e18)
+From TokenHolder (CToken cUSDP Mint 10e18)
+Assert Equal (Erc20 USDP TokenBalance TokenHolder) (401252966e18)
+Assert Equal (Erc20 USDP TokenBalance cUSDP) (10e18)
+
+-- Borrow test
+From CUSDCHolder (CToken cUSDP Borrow 1e18)
+Assert Equal (Erc20 USDP TokenBalance CUSDCHolder) (1e18)
+Assert Equal (Erc20 USDP TokenBalance cUSDP) (9e18)
+
+-- Repay borrow test
+From CUSDCHolder (Erc20 USDP Approve (Address cUSDP) 1e18)
+From CUSDCHolder (CToken cUSDP RepayBorrow 1e18)
+Assert Equal (Erc20 USDP TokenBalance CUSDCHolder) (0)
+Assert Equal (Erc20 USDP TokenBalance cUSDP) (10e18)
+
+-- Redeem test (note: 50 cUSDP == 1 USDP initially)
+From TokenHolder (CToken cUSDP Redeem 50e8)
+
+Print "cUSDP integration ok"
