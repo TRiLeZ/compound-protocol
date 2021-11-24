@@ -91,7 +91,9 @@
     "CrowdProposalFactory": "0x54a06047087927D9B0fb21c1cf0ebd792764dDB8",
     "IRM_USDT_Updateable": "0xFB564da37B41b2F6B6EDcc3e56FbF523bD9F2012",
     "IRM_USDC_Updateable": "0xD8EC56013EA119E7181d231E5048f90fBbe753c0",
-    "IRM_UNI_Updateable": "0xd88b94128ff2b8cf2d7886cd1c1e46757418ca2a"
+    "IRM_UNI_Updateable": "0xd88b94128ff2b8cf2d7886cd1c1e46757418ca2a",
+    "USDP": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
+    "cUSDP": "0x041171993284df560249B57358F931D9eB7b925D"
   },
   "Blocks": {
     "cAAVEDelegate": 12654137,
@@ -155,7 +157,8 @@
     "CrowdProposalFactory": 12137801,
     "IRM_USDT_Updateable": 10609555,
     "IRM_USDC_Updateable": 10810554,
-    "IRM_UNI_Updateable": 11015612
+    "IRM_UNI_Updateable": 11015612,
+    "cUSDP": 13258119
   },
   "PriceData": {
     "description": "Open Oracle Price Data",
@@ -431,6 +434,12 @@
       "decimals": 18,
       "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
       "contract": "Maker"
+    },
+    "USDP": {
+      "name": "Pax Dollar",
+      "symbol": "USDP",
+      "decimals": 18,
+      "address": "0x8E870D67F660D95d5be530380D0eC0bd388289E1"
     }
   },
   "CTokenDelegate": {
@@ -654,6 +663,15 @@
       "contract": "CErc20Delegator",
       "initial_exchange_rate_mantissa": "200000000000000000000000000",
       "address": "0x95b4eF2869eBD94BEb4eEE400a99824BF5DC325b"
+    },
+    "cUSDP": {
+      "name": "Compound Pax Dollar",
+      "symbol": "cUSDP",
+      "decimals": 8,
+      "underlying": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
+      "contract": "CErc20Delegator",
+      "initial_exchange_rate_mantissa": "200000000000000000000000000",
+      "address": "0x041171993284df560249B57358F931D9eB7b925D"
     }
   },
   "InterestRateModel": {
