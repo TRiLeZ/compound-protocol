@@ -55,17 +55,17 @@ From CUSDCHolder (Erc20 USDC Approve (Address cUSDC) 10000e6)
 From CUSDCHolder (CToken cUSDC Mint 1000e6)
 From CUSDCHolder (Comptroller EnterMarkets (cUSDC))
 -- Borrow the new token
+Expect Changes (Erc20 USDP TokenBalance CUSDCHolder) +1e18
+Expect Changes (Erc20 USDP TokenBalance cUSDP) -1e18
 From CUSDCHolder (CToken cUSDP Borrow 1e18)
-Assert Equal (Erc20 USDP TokenBalance CUSDCHolder) (1e18)
-Assert Equal (Erc20 USDP TokenBalance cUSDP) (9e18)
 
 --------------------------------------------------------------------
 -- Repay borrow test
 --------------------------------------------------------------------
 From CUSDCHolder (Erc20 USDP Approve (Address cUSDP) 1e18)
+Expect Changes (Erc20 USDP TokenBalance CUSDCHolder) -1e18
+Expect Changes (Erc20 USDP TokenBalance cUSDP) +1e18
 From CUSDCHolder (CToken cUSDP RepayBorrow 1e18)
-Assert Equal (Erc20 USDP TokenBalance CUSDCHolder) (0)
-Assert Equal (Erc20 USDP TokenBalance cUSDP) (10e18)
 
 --------------------------------------------------------------------
 -- Redeem test  (note: 50 cToken == 1 Token initially)
