@@ -1,0 +1,74 @@
+#!/usr/bin/env -S yarn repl -s
+
+PrintTransactionLogs
+
+-- Token holder addresses for mocking
+Alias CompHolder "0x7587caefc8096f5f40acb83a09df031a018c66ec"
+Alias TokenHolder "0xF977814e90dA44bFA03b6295A0616a897441aceC" -- Binance 8
+Alias CUSDCHolder "0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8" -- Binance 7
+
+-- New oracle address
+Alias NewOracle "0x046728da7cb8272284238bD3e47909823d63A58D"
+
+Web3Fork "https://mainnet-eth.compound.finance/@13673423" (CompHolder TokenHolder CUSDCHolder)
+UseConfigs mainnet
+
+--------------------------------------------------------------------
+-- Governance proposal
+--------------------------------------------------------------------
+-- Delegate and propose
+From CompHolder (Comp Delegate CompHolder)
+From CompHolder (GovernorBravo GovernorBravo Propose "Add USDP Market" [(Address Comptroller) (Address Comptroller) (Address cUSDP)] [0 0 0] ["_setPriceOracle(address)" "_supportMarket(address)" "_setReserveFactor(uint256)"] [[(Address NewOracle)] [(Address cUSDP)] [250000000000000000]])
+
+-- Fast forward, vote, queue, execute
+MineBlock
+AdvanceBlocks 14000
+From CompHolder (GovernorBravo GovernorBravo Proposal LastProposal Vote For)
+AdvanceBlocks 20000
+GovernorBravo GovernorBravo Proposal LastProposal Queue
+IncreaseTime 604910
+GovernorBravo GovernorBravo Proposal LastProposal Execute
+
+--------------------------------------------------------------------
+-- Market supported test
+--------------------------------------------------------------------
+Assert True (Comptroller CheckListed cUSDP)
+
+--------------------------------------------------------------------
+-- Accrue interest test
+--------------------------------------------------------------------
+CToken cUSDP AccrueInterest
+
+--------------------------------------------------------------------
+-- Mint test
+--------------------------------------------------------------------
+From TokenHolder (Erc20 USDP Approve (Address cUSDP) 10e18)
+Expect Changes (Erc20 USDP TokenBalance TokenHolder) -10e18
+Expect Changes (Erc20 USDP TokenBalance cUSDP) +10e18
+From TokenHolder (CToken cUSDP Mint 10e18)
+
+--------------------------------------------------------------------
+-- Borrow test
+--------------------------------------------------------------------
+-- Deposit collateral
+From CUSDCHolder (Erc20 USDC Approve (Address cUSDC) 10000e6) 
+From CUSDCHolder (CToken cUSDC Mint 1000e6)
+-- Borrow the new token
+From CUSDCHolder (CToken cUSDP Borrow 1e18)
+Assert Equal (Erc20 USDP TokenBalance CUSDCHolder) (1e18)
+Assert Equal (Erc20 USDP TokenBalance cUSDP) (9e18)
+
+--------------------------------------------------------------------
+-- Repay borrow test
+--------------------------------------------------------------------
+From CUSDCHolder (Erc20 USDP Approve (Address cUSDP) 1e18)
+From CUSDCHolder (CToken cUSDP RepayBorrow 1e18)
+Assert Equal (Erc20 USDP TokenBalance CUSDCHolder) (0)
+Assert Equal (Erc20 USDP TokenBalance cUSDP) (10e18)
+
+--------------------------------------------------------------------
+-- Redeem test  (note: 50 cToken == 1 Token initially)
+--------------------------------------------------------------------
+From TokenHolder (CToken cUSDP Redeem 50e8)
+
+Print "Integration ok"
