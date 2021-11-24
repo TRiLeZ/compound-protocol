@@ -53,6 +53,7 @@ From TokenHolder (CToken cUSDP Mint 10e18)
 -- Deposit collateral
 From CUSDCHolder (Erc20 USDC Approve (Address cUSDC) 10000e6) 
 From CUSDCHolder (CToken cUSDC Mint 1000e6)
+From CUSDCHolder (Comptroller EnterMarkets (cUSDC))
 -- Borrow the new token
 From CUSDCHolder (CToken cUSDP Borrow 1e18)
 Assert Equal (Erc20 USDP TokenBalance CUSDCHolder) (1e18)
