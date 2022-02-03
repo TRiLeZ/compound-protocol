@@ -929,9 +929,14 @@ contract Comptroller is ComptrollerV7Storage, ComptrollerInterface, ComptrollerE
       * @return uint 0=success, otherwise a failure. (See enum Error for details)
       */
     function _supportMarket(CToken cToken) external returns (uint) {
-        if (msg.sender != admin) {
+        // 1. Ensure the sender is the admin of the Comptroller
+        // 2. Ensure the admin of the cToken is the admin of the Comptroller
+        if (/* 1. */ msg.sender != admin || /* 2. */ cToken.admin != admin) {
             return fail(Error.UNAUTHORIZED, FailureInfo.SUPPORT_MARKET_OWNER_CHECK);
         }
+
+        // Ensure the admin of the cToken is the Comptroller
+        
 
         if (markets[address(cToken)].isListed) {
             return fail(Error.MARKET_ALREADY_LISTED, FailureInfo.SUPPORT_MARKET_EXISTS);
