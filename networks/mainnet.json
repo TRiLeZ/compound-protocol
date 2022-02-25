@@ -98,7 +98,9 @@
     "CrowdProposalFactory": "0x54a06047087927D9B0fb21c1cf0ebd792764dDB8",
     "IRM_USDT_Updateable": "0xFB564da37B41b2F6B6EDcc3e56FbF523bD9F2012",
     "IRM_USDC_Updateable": "0xD8EC56013EA119E7181d231E5048f90fBbe753c0",
-    "IRM_UNI_Updateable": "0xd88b94128ff2b8cf2d7886cd1c1e46757418ca2a"
+    "IRM_UNI_Updateable": "0xd88b94128ff2b8cf2d7886cd1c1e46757418ca2a",
+    "RAI": "0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919",
+    "cRAI": "0x2220e2A723C5099aB0be7FBBc29D052938F82E0b"
   },
   "Blocks": {
     "cFEIDelegate": 12654137,
@@ -167,7 +169,8 @@
     "CrowdProposalFactory": 12137801,
     "IRM_USDT_Updateable": 10609555,
     "IRM_USDC_Updateable": 10810554,
-    "IRM_UNI_Updateable": 11015612
+    "IRM_UNI_Updateable": 11015612,
+    "cRAI": 14118087
   },
   "PriceData": {
     "description": "Open Oracle Price Data",
@@ -461,6 +464,12 @@
       "decimals": 18,
       "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
       "contract": "Maker"
+    },
+    "RAI": {
+      "name": "Rai Reflex Index",
+      "symbol": "RAI",
+      "decimals": 18,
+      "address": "0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919"
     }
   },
   "CTokenDelegate": {
@@ -712,6 +721,15 @@
       "contract": "CErc20Delegator",
       "initial_exchange_rate_mantissa": "200000000000000000000000000",
       "address": "0x95b4eF2869eBD94BEb4eEE400a99824BF5DC325b"
+    },
+    "cRAI": {
+      "name": "Compound Rai Reflex Index",
+      "symbol": "cRAI",
+      "decimals": 8,
+      "underlying": "0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919",
+      "contract": "CErc20Delegator",
+      "initial_exchange_rate_mantissa": "200000000000000000000000000",
+      "address": "0x2220e2A723C5099aB0be7FBBc29D052938F82E0b"
     }
   },
   "InterestRateModel": {
