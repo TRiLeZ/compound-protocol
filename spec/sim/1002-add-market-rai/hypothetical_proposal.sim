@@ -20,7 +20,7 @@ UseConfigs mainnet
 -- Delegate and propose
 From CompHolder (Comp Delegate CompHolder)
 From CompHolder2 (Comp Delegate CompHolder)
-From CompHolder (GovernorBravo GovernorBravo Propose "Add RAI Market" [(Address Comptroller) (Address Comptroller) (Address cRAI)] [0 0 0] ["_setPriceOracle(address)" "_supportMarket(address)" "_setReserveFactor(uint256)"] [[(Address NewOracle)] [(Address cRAI)] [250000000000000000]])
+From CompHolder (GovernorBravo GovernorBravo Propose "Add RAI Market" [(Address Comptroller) (Address Comptroller) (Address cRAI) (Address Comptroller)] [0 0 0 0] ["_setPriceOracle(address)" "_supportMarket(address)" "_setReserveFactor(uint256)" "_setMarketBorrowCaps(address[],uint256[])"] [[(Address NewOracle)] [(Address cRAI)] [250000000000000000] [[(Address cRAI)] [4000000000000000000000000]]])
 
 -- Fast forward, vote, queue, execute
 MineBlock
