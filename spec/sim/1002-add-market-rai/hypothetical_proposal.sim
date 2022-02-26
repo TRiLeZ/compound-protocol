@@ -9,9 +9,9 @@ Alias TokenHolder "0xeB2629a2734e272Bcc07BDA959863f316F4bD4Cf" -- Coinbase 6
 Alias CUSDCHolder "0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8" -- Binance 7
 
 -- New oracle address
-Alias NewOracle "0x046728da7cb8272284238bD3e47909823d63A58D"
+Alias NewOracle "0x65c816077C29b557BEE980ae3cC2dCE80204A0C5"
 
-Web3Fork "https://mainnet-eth.compound.finance/@14272000" (CompHolder CompHolder2 TokenHolder CUSDCHolder)
+Web3Fork "https://mainnet-eth.compound.finance/@14278600" (CompHolder CompHolder2 TokenHolder CUSDCHolder)
 UseConfigs mainnet
 
 --------------------------------------------------------------------
