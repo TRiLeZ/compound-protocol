@@ -62,7 +62,7 @@ Assert Equal (Comptroller CompBorrowSpeed cFEI) (0)
 -- Delegate and propose
 From CompHolder (Comp Delegate CompHolder)
 From CompHolder2 (Comp Delegate CompHolder)
-From CompHolder (GovernorBravo GovernorBravo Propose "Reduce COMP Speeds" [(Address Comptroller)] [0] ["_setCompSpeeds(address[],uint256[],uint256[])"] [[[(Address cETH) (Address cUSDC) (Address cDAI) (Address cWBTC2) (Address cUSDT) (Address cUNI) (Address cLINK) (Address cZRX) (Address cBAT)] [5375000000000000 33500000000000000 33500000000000000 5375000000000000 4825000000000000 731250000000000 731250000000000 731250000000000 731250000000000] [5375000000000000 33500000000000000 33500000000000000 5375000000000000 4825000000000000 731250000000000 731250000000000 731250000000000 731250000000000]]])
+From CompHolder (GovernorBravo GovernorBravo Propose "Reduce COMP Speeds" [(Address Comptroller)] [0] ["_setCompSpeeds(address[],uint256[],uint256[])"] [[[(Address cETH) (Address cUSDC) (Address cDAI) (Address cWBTC2) (Address cUSDT) (Address cUNI) (Address cLINK) (Address cZRX) (Address cBAT) (Address cCOMP)] [5375000000000000 33500000000000000 33500000000000000 5375000000000000 4825000000000000 731250000000000 731250000000000 731250000000000 731250000000000 2500000000000000] [5375000000000000 33500000000000000 33500000000000000 5375000000000000 4825000000000000 731250000000000 731250000000000 731250000000000 731250000000000 0]]])
 
 -- Fast forward, vote, queue, execute
 MineBlock
@@ -83,7 +83,7 @@ Assert Equal (Comptroller CompSupplySpeed cDAI) (33500000000000000)
 Assert Equal (Comptroller CompSupplySpeed cWBTC) (0)
 Assert Equal (Comptroller CompSupplySpeed cWBTC2) (5375000000000000)
 Assert Equal (Comptroller CompSupplySpeed cUSDT) (4825000000000000)
-Assert Equal (Comptroller CompSupplySpeed cCOMP) (5000000000000000)
+Assert Equal (Comptroller CompSupplySpeed cCOMP) (2500000000000000)
 Assert Equal (Comptroller CompSupplySpeed cUNI) (731250000000000)
 Assert Equal (Comptroller CompSupplySpeed cLINK) (731250000000000)
 Assert Equal (Comptroller CompSupplySpeed cZRX) (731250000000000)
