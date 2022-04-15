@@ -1,0 +1,123 @@
+#!/usr/bin/env -S yarn repl -s
+
+PrintTransactionLogs
+
+-- Token holder addresses for mocking
+Alias CompHolder "0x7587caefc8096f5f40acb83a09df031a018c66ec" -- Compound Team 2
+Alias CompHolder2 "0x5608169973d639649196A84EE4085a708bcBf397" -- Compound Team 3
+
+Web3Fork "https://mainnet-eth.compound.finance/@14592000" (CompHolder CompHolder2)
+UseConfigs mainnet
+
+--------------------------------------------------------------------
+-- Verify current COMP distribution speeds
+--------------------------------------------------------------------
+-- Verify COMP supply speeds
+Assert Equal (Comptroller CompSupplySpeed cETH) (5375000000000000)
+Assert Equal (Comptroller CompSupplySpeed cUSDC) (33500000000000000)
+Assert Equal (Comptroller CompSupplySpeed cDAI) (33500000000000000)
+Assert Equal (Comptroller CompSupplySpeed cWBTC) (0)
+Assert Equal (Comptroller CompSupplySpeed cWBTC2) (5375000000000000)
+Assert Equal (Comptroller CompSupplySpeed cUSDT) (4825000000000000)
+Assert Equal (Comptroller CompSupplySpeed cCOMP) (2500000000000000)
+Assert Equal (Comptroller CompSupplySpeed cUNI) (731250000000000)
+Assert Equal (Comptroller CompSupplySpeed cLINK) (731250000000000)
+Assert Equal (Comptroller CompSupplySpeed cZRX) (731250000000000)
+Assert Equal (Comptroller CompSupplySpeed cTUSD) (0)
+Assert Equal (Comptroller CompSupplySpeed cBAT) (731250000000000)
+Assert Equal (Comptroller CompSupplySpeed cAAVE) (0)
+Assert Equal (Comptroller CompSupplySpeed cSAI) (0)
+Assert Equal (Comptroller CompSupplySpeed cSUSHI) (0)
+Assert Equal (Comptroller CompSupplySpeed cMKR) (0)
+Assert Equal (Comptroller CompSupplySpeed cREP) (0)
+Assert Equal (Comptroller CompSupplySpeed cYFI) (0)
+Assert Equal (Comptroller CompSupplySpeed cUSDP) (0)
+Assert Equal (Comptroller CompSupplySpeed cFEI) (0)
+
+-- Verify COMP borrow speeds
+Assert Equal (Comptroller CompBorrowSpeed cETH) (5375000000000000)
+Assert Equal (Comptroller CompBorrowSpeed cUSDC) (33500000000000000)
+Assert Equal (Comptroller CompBorrowSpeed cDAI) (33500000000000000)
+Assert Equal (Comptroller CompBorrowSpeed cWBTC) (0)
+Assert Equal (Comptroller CompBorrowSpeed cWBTC2) (5375000000000000)
+Assert Equal (Comptroller CompBorrowSpeed cUSDT) (4825000000000000)
+Assert Equal (Comptroller CompBorrowSpeed cCOMP) (0)
+Assert Equal (Comptroller CompBorrowSpeed cUNI) (731250000000000)
+Assert Equal (Comptroller CompBorrowSpeed cLINK) (731250000000000)
+Assert Equal (Comptroller CompBorrowSpeed cZRX) (731250000000000)
+Assert Equal (Comptroller CompBorrowSpeed cTUSD) (0)
+Assert Equal (Comptroller CompBorrowSpeed cBAT) (731250000000000)
+Assert Equal (Comptroller CompBorrowSpeed cAAVE) (0)
+Assert Equal (Comptroller CompBorrowSpeed cSAI) (0)
+Assert Equal (Comptroller CompBorrowSpeed cSUSHI) (0)
+Assert Equal (Comptroller CompBorrowSpeed cMKR) (0)
+Assert Equal (Comptroller CompBorrowSpeed cREP) (0)
+Assert Equal (Comptroller CompBorrowSpeed cYFI) (0)
+Assert Equal (Comptroller CompBorrowSpeed cUSDP) (0)
+Assert Equal (Comptroller CompBorrowSpeed cFEI) (0)
+
+--------------------------------------------------------------------
+-- Governance proposal
+--------------------------------------------------------------------
+-- Delegate and propose
+From CompHolder (Comp Delegate CompHolder)
+From CompHolder2 (Comp Delegate CompHolder)
+From CompHolder (GovernorBravo GovernorBravo Propose "Reduce COMP Speeds" [(Address Comptroller)] [0] ["_setCompSpeeds(address[],uint256[],uint256[])"] [[[(Address cETH) (Address cUSDC) (Address cDAI) (Address cWBTC2) (Address cUSDT) (Address cUNI) (Address cLINK) (Address cZRX) (Address cBAT) (Address cCOMP)] [0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0]]])
+
+-- Fast forward, vote, queue, execute
+MineBlock
+AdvanceBlocks 14000
+From CompHolder (GovernorBravo GovernorBravo Proposal LastProposal Vote For)
+AdvanceBlocks 20000
+GovernorBravo GovernorBravo Proposal LastProposal Queue
+IncreaseTime 604910
+GovernorBravo GovernorBravo Proposal LastProposal Execute
+
+--------------------------------------------------------------------
+-- Verify new COMP distribution speeds
+--------------------------------------------------------------------
+-- Verify COMP supply speeds
+Assert Equal (Comptroller CompSupplySpeed cETH) (0)
+Assert Equal (Comptroller CompSupplySpeed cUSDC) (0)
+Assert Equal (Comptroller CompSupplySpeed cDAI) (0)
+Assert Equal (Comptroller CompSupplySpeed cWBTC) (0)
+Assert Equal (Comptroller CompSupplySpeed cWBTC2) (0)
+Assert Equal (Comptroller CompSupplySpeed cUSDT) (0)
+Assert Equal (Comptroller CompSupplySpeed cCOMP) (0)
+Assert Equal (Comptroller CompSupplySpeed cUNI) (0)
+Assert Equal (Comptroller CompSupplySpeed cLINK) (0)
+Assert Equal (Comptroller CompSupplySpeed cZRX) (0)
+Assert Equal (Comptroller CompSupplySpeed cTUSD) (0)
+Assert Equal (Comptroller CompSupplySpeed cBAT) (0)
+Assert Equal (Comptroller CompSupplySpeed cAAVE) (0)
+Assert Equal (Comptroller CompSupplySpeed cSAI) (0)
+Assert Equal (Comptroller CompSupplySpeed cSUSHI) (0)
+Assert Equal (Comptroller CompSupplySpeed cMKR) (0)
+Assert Equal (Comptroller CompSupplySpeed cREP) (0)
+Assert Equal (Comptroller CompSupplySpeed cYFI) (0)
+Assert Equal (Comptroller CompSupplySpeed cUSDP) (0)
+Assert Equal (Comptroller CompSupplySpeed cFEI) (0)
+
+-- Verify COMP borrow speeds
+Assert Equal (Comptroller CompBorrowSpeed cETH) (0)
+Assert Equal (Comptroller CompBorrowSpeed cUSDC) (0)
+Assert Equal (Comptroller CompBorrowSpeed cDAI) (0)
+Assert Equal (Comptroller CompBorrowSpeed cWBTC) (0)
+Assert Equal (Comptroller CompBorrowSpeed cWBTC2) (0)
+Assert Equal (Comptroller CompBorrowSpeed cUSDT) (0)
+Assert Equal (Comptroller CompBorrowSpeed cCOMP) (0)
+Assert Equal (Comptroller CompBorrowSpeed cUNI) (0)
+Assert Equal (Comptroller CompBorrowSpeed cLINK) (0)
+Assert Equal (Comptroller CompBorrowSpeed cZRX) (0)
+Assert Equal (Comptroller CompBorrowSpeed cTUSD) (0)
+Assert Equal (Comptroller CompBorrowSpeed cBAT) (0)
+Assert Equal (Comptroller CompBorrowSpeed cAAVE) (0)
+Assert Equal (Comptroller CompBorrowSpeed cSAI) (0)
+Assert Equal (Comptroller CompBorrowSpeed cSUSHI) (0)
+Assert Equal (Comptroller CompBorrowSpeed cMKR) (0)
+Assert Equal (Comptroller CompBorrowSpeed cREP) (0)
+Assert Equal (Comptroller CompBorrowSpeed cYFI) (0)
+Assert Equal (Comptroller CompBorrowSpeed cUSDP) (0)
+Assert Equal (Comptroller CompBorrowSpeed cFEI) (0)
+
+Print "Proposal okay"
